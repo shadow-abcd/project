@@ -1,0 +1,6 @@
+{
+  "name": "Zip to APK",
+  "description": "Convert zipped web projects or HTML into installable Android apps with preflight validation, customizable permissions, and APK/AAB export.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

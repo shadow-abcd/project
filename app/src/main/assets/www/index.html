@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#F5F6FA" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0D1030" media="(prefers-color-scheme: dark)" />
+    <meta name="description" content="Convert a zipped web project or a single HTML file into an installable Android app. No Android Studio needed." />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <title>Zip to APK</title>
+    <script>
+      // Apply the saved theme before first paint to avoid a light/dark flash.
+      try {
+        var t = localStorage.getItem('zipapk:theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    </script>
+    <script>
+      // Startup safety net: if the app has not started after 8 seconds, show why instead of a blank page.
+      (function () {
+        var boot = (window.__zipapkBoot = { mounted: false, errors: [] });
+        function note(text) {
+          if (boot.errors.length < 6) boot.errors.push(String(text).slice(0, 300));
+        }
+        window.addEventListener(
+          'error',
+          function (e) {
+            var t = e.target;
+            if (t && t !== window && (t.tagName === 'SCRIPT' || t.tagName === 'LINK')) note('Could not load ' + (t.src || t.href));
+            else note(e.message || 'Unknown error');
+          },
+          true
+        );
+        window.addEventListener('unhandledrejection', function (e) {
+          note('Unhandled: ' + ((e.reason && e.reason.message) || e.reason));
+        });
+        setTimeout(function () {
+          if (boot.mounted) return;
+          var root = document.getElementById('root');
+          if (!root) return;
+          var details = (boot.errors.join('\n') || 'No error was reported.') + '\n\n' + navigator.userAgent + '\n' + location.href;
+          var box = document.createElement('div');
+          box.setAttribute('role', 'alert');
+          box.style.cssText = 'font:16px/1.5 system-ui,sans-serif;max-width:520px;margin:0 auto;padding:48px 20px;color:#12163a';
+          var h = document.createElement('h1');
+          h.textContent = 'Zip to APK could not start';
+          h.style.cssText = 'font-size:24px;margin:0 0 8px';
+          var p = document.createElement('p');
+          p.textContent = 'The app did not finish loading. Check your connection and try again. If it keeps happening, send the details below to whoever manages this app.';
+          var pre = document.createElement('pre');
+          pre.textContent = details;
+          pre.style.cssText = 'white-space:pre-wrap;word-break:break-word;background:#eceef7;padding:12px;border-radius:10px;font-size:12px';
+          var b = document.createElement('button');
+          b.textContent = 'Try again';
+          b.style.cssText = 'min-height:46px;padding:0 20px;border:0;border-radius:12px;background:#2b44ff;color:#fff;font:700 16px system-ui,sans-serif';
+          b.onclick = function () { location.reload(); };
+          box.appendChild(h); box.appendChild(p); box.appendChild(pre); box.appendChild(b);
+          root.textContent = '';
+          root.appendChild(box);
+        }, 8000);
+      })();
+    </script>
+    <script type="module" crossorigin src="./assets/index-BuL-qQ4q.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-u3qazhgJ.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>Zip to APK needs JavaScript to run.</noscript>
+  </body>
+</html>
